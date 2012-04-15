@@ -1,0 +1,38 @@
+wur is a client side controller for the jukebox server (NestorInc)
+
+- Introduction -
+
+- UI overview -
+
+ ------------------------------------------------------------
+ |  on air window                                           |
+ |__________________________________________________________|
+ |                        |                                 |
+ |    playlist            |       database search           |
+ |    window              |       window                    |
+ |                        |                                 |
+ |                        |                                 |
+ |                        |                                 |
+ |                        |                                 |
+ |                        |                                 |
+ |                        |                                 |
+ |                        |                                 |
+ |----------------------------------------------------------|
+ |   insert mode window                                     |
+ ------------------------------------------------------------
+
+- Command mode -
+
+ current available command are :
+  - "i" : go to insert mode
+  - "n" : perform a next in the play queue
+  - "p" : perform a previous in the play queue
+  - " " : perform a pause on the listening song
+  - "m" : perform a mute
+  - "q" : quit wur
+
+- Insert mode -
+
+
+
+
