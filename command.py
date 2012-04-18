@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import log
 
@@ -10,7 +10,7 @@ class Command:
   LOGGER = log.Log()
 
   def __init__(self, core):
-    self.COMMAND_SET = {'login':     self.__process_login,
+    self.command_set = {'login':     self.__process_login,
                         'logout':    self.__process_logout,
                         'play':      self.__process_play,
                         'stop':      self.__process_stop,
@@ -37,20 +37,20 @@ class Command:
     commands = self.__parse_command(user_input)
     for command in commands:
       splitted_command = command.split()
-      if self.COMMAND_SET.has_key(splitted_command[0]):
+      if self.command_set.has_key(splitted_command[0]):
         self.__class__.LOGGER.log.error("got command")
-	try:
-          self.function = self.COMMAND_SET[splitted_command[0]]
+        try:
+          self.function = self.command_set[splitted_command[0]]
           code, messages = self.function(splitted_command[1:])
-	except Exception, e:
+        except Exception, e:
           self.__class__.LOGGER.log.error("%s" % (e))
-	  messages = None
-	  code = 200
+          messages = None
+          code = 200
       elif self.alias_set.has_key(splitted_command[0]):
         self.process_command("%s %s" % (self.alias_set[splitted_command[0]])) 
       else:
         messages = None
-	code = 201
+        code = 201
     return (code, messages)
 
   def __parse_command(self, user_input):

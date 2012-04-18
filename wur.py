@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import curses
 import command
 import core
@@ -52,13 +54,8 @@ class Search_w:
     self.parent_w_y,self.parent_w_x = parent_w.getmaxyx()
     self.search_w = parent_w.derwin(self.parent_w_y-7, self.parent_w_x*2/3, 5, self.parent_w_x/3)
     self.search_w_y,self.search_w_x = self.search_w.getmaxyx()
-    s = "Rage against the machine - Wake up (5:08)"
-    for i in range(0,self.search_w_y):
-      if i%2 == 0:
-        c=3
-      else:
-        c=4
-      self.search_w.addstr(i, 0, s + " " * (self.search_w_x - 1 - len(s)),curses.color_pair(c))
+    s = "/ NO SEARCH /"
+    self.search_w.addstr(i, 0, s + " " * (self.search_w_x - 1 - len(s)))
     self.search_w.refresh()
 
 class Onair_w:
