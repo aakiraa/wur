@@ -32,12 +32,12 @@ class Playlist_w:
 
   def add_pos(self, pos, string, color):
     self.playlist_w.addstr(pos, 0, string + " " * (self.playlist_w_x - 1 - len(string)),curses.color_pair(color))
-    
+
   def add(self, strings):
     color = 0
     for i in range(0,min(self.playlist_w_y-1, len(strings)-1)):
       self.add_pos(i, strings[i][0] + " " + strings[i][1] + " (%02d:%02d)" % (strings[i][2]/60, strings[i][2]%60), color)
-      if color == 0: color = 6 
+      if color == 0: color = 6
       else: color = 0
 
   def swap_pos(self, a, b):
@@ -70,7 +70,7 @@ class Onair_w:
     self.parent_w_y,self.parent_w_x = parent_w.getmaxyx()
     self.onair_w = parent_w.derwin(4, self.parent_w_x, 0, 0)
     self.onair_w_y,self.onair_w_x = self.onair_w.getmaxyx()
-    
+
     self.onair_w.addstr(3, 0, " " * (self.onair_w_x-1),curses.color_pair(5))
     self.onair_w.addstr(0, 0, "--------------------")
     self.onair_w.addstr(1, 0, "--------------------")
@@ -100,7 +100,7 @@ class Onair_w:
   def set_artist(self, current_artist):
     self.onair_w.addstr(0, 0, " " * (self.onair_w_x-1),curses.color_pair(0))
     self.onair_w.addstr(0, 0, current_artist)
- 
+
   def set_title(self, current_title):
     self.onair_w.addstr(1, 0, " " * (self.onair_w_x-1),curses.color_pair(0))
     self.onair_w.addstr(1, 0, current_title)
@@ -112,7 +112,7 @@ class Onair_w:
     self.minute_total = current_total/60
     self.second_total = current_total%60
     self.onair_w.addstr(2, 0, "%02d:%02d / %02d:%02d" % (self.minute, self.second, self.minute_total, self.second_total))
-  
+
   def refresh(self):
     self.onair_w.refresh()
 
@@ -142,7 +142,7 @@ class Buffer_w:
     self.status_bar  = "[c] [%s] [%s]" % (self.role,self.logged_at)
     self.buffer_w.addstr(0, 0, self.status_bar +  " " * (self.buffer_w_x - 1 - len(self.status_bar)), curses.color_pair(5))
     self.buffer_w.refresh()
-    
+
     self.history = []
     self.user_input = ""
     self.prompt =  "[%s]: " % (self.channel)
@@ -187,7 +187,7 @@ class Buffer_w:
     while True:
       self.refresh_prompt()
       event = self.buffer_w.getkey(1, self.current_pos)
-      if ord(event) == 127: # got BACKSPACE, deleting     
+      if ord(event) == 127: # got BACKSPACE, deleting
         self.buffer_w.addstr(1, len(self.prompt) + len(self.user_input)-1, " ")
         self.user_input = self.user_input[:-1]
       elif ord(event) == 10:# got ENTER, return pass
@@ -207,46 +207,46 @@ class Buffer_w:
     self.password = "0" * pass_length
     pass_length = 0
 
-  def insert_mode(self):   
+  def insert_mode(self):
     self.buffer_w.addstr(1,0, self.prompt)
     self.refresh_mode("i")
     while True:
       self.buffer_w.noutrefresh()
       curses.doupdate()
       event = self.buffer_w.getkey(1, self.current_pos)
-      
+
       if ord(event) == 27 : # got ESC, exiting from insert mode
         self.refresh_mode("c")
         break
       elif ord(event) == 410: continue # got SIGWINCH, resize elements (not implemented yet)
-      elif ord(event) == 127: # got BACKSPACE, deleting     
+      elif ord(event) == 127: # got BACKSPACE, deleting
         self.buffer_w.addstr(1, len(self.prompt) + len(self.user_input)-1, " ")
         self.user_input = self.user_input[:-1]
       elif ord(event) == 10:# got ENTER, refresh and process command
         #continue if there is nothing interesting on the command line
-        if self.user_input == "" or self.user_input[0] == " ": 
+        if self.user_input == "" or self.user_input[0] == " ":
           self.user_input = ""
           self.current_pos = len(self.prompt)
           self.refresh_prompt()
           continue # jump back to get keystroke with a new fresh prompt
         (code, display_params) = self.command_obj.process_command(self.user_input)
-	if code == 0:
-	  pass
+        if code == 0:
+          pass
         if code == 1:
-	  if display_params is not None:
-	    if display_params.has_key("onair"):
-	      self.onair_w.set_onair(display_params["onair"])
-	    if display_params.has_key("playlist"):
-	      self.playlist_w.add(display_params["playlist"])
-	    if display_params.has_key("status"):
-	      self.role = "~"
-	      self.set_logged_at(display_params["status"])
-	      self.refresh_status()
-	      self.set_channel("john")
-	      self.refresh_prompt()
-	    self.connected = True
-	    self.refreshing = threading.Thread(target=self.refresh_thread)
-	    self.refreshing.start()
+          if display_params is not None:
+            if display_params.has_key("onair"):
+              self.onair_w.set_onair(display_params["onair"])
+            if display_params.has_key("playlist"):
+              self.playlist_w.add(display_params["playlist"])
+            if display_params.has_key("status"):
+              self.role = "~"
+              self.set_logged_at(display_params["status"])
+              self.refresh_status()
+              self.set_channel("john")
+              self.refresh_prompt()
+            self.connected = True
+            self.refreshing = threading.Thread(target=self.refresh_thread)
+            self.refreshing.start()
           self.onair_w.set_status_bar(self.user_input)
           self.add_history(self.user_input)
         elif code == 128:
@@ -301,10 +301,10 @@ class JUI:
       self.playlist_w.add(songs)
       for i in range(0,9):
         time.sleep(1)
-	timer = timer + 1
+        timer = timer + 1
         self.onair_w.set_time(timer, total)
-	self.onair_w.refresh()
-	self.playlist_w.refresh()
+        self.onair_w.refresh()
+        self.playlist_w.refresh()
 
   def set_last_command(self, command):
     self.onair_w.set_status_bar(command)
@@ -316,29 +316,29 @@ class JUI:
     while True:
       curses.curs_set(0)
       event = self.main_w.getch()
-      if event == ord("q"): 
-	self.stop_refreshing = 0
+      if event == ord("q"):
+        self.stop_refreshing = 0
         break
       elif event == ord("i"):
         self.buffer_w.insert_mode()
       elif event == ord("n"):
-	update = self.core.forward()
+        update = self.core.forward()
         if update is not None:
           self.onair_w.set_onair(update["current"])
           self.playlist_w.add(update["playlist"])
-	  self.onair_w.refresh()
-	  self.playlist_w.refresh()
+          self.onair_w.refresh()
+          self.playlist_w.refresh()
       elif event == ord("p"):
-	update = self.core.prev()
+        update = self.core.prev()
         if update is not None:
           self.onair_w.set_onair(update["current"])
           self.playlist_w.add(update["playlist"])
-	  self.onair_w.refresh()
-	  self.playlist_w.refresh()
+          self.onair_w.refresh()
+          self.playlist_w.refresh()
       elif event == ord("m"):
-	self.core.mute()
+        self.core.mute()
       elif event == ord(" "):
-	self.core.pause()
+        self.core.pause()
       else:
         #self.process_command(event)
         self.onair_w.set_status_bar(str(event))

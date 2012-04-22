@@ -6,15 +6,15 @@ import log
 
 from subprocess import Popen, PIPE
 
-# TODO: 
-# 	- create real player and put the code corresponding to it... in it !
-# 	- find why these SSL errors occur all the time -> maybe this is something related with the SSL context and the multithreading
+# TODO:
+#         - create real player and put the code corresponding to it... in it !
+#         - find why these SSL errors occur all the time -> maybe this is something related with the SSL context and the multithreading
 
 class Core:
   """
   Core handle request mainly orginating from Command
   but can also be used directly by main classes (be careful on what you do)
-  It aims to check some basic stuff like authentication before passing order 
+  It aims to check some basic stuff like authentication before passing order
   to Controller or Player
   """
   error_value = {
@@ -35,7 +35,7 @@ class Core:
     self.stream_port = 8080
     self.controller = None
     self.player = None
- 
+
   def login_required(func):
     """ simple decorator, wrapping enabled, preventing usage of commands needing logged state """
     def wrapper(*args, **kwargs):
@@ -43,9 +43,9 @@ class Core:
       if self.__logged:
         response = func(*args, **kwargs)
       else:
-	return (self.__class__.error_value["NOT_CONNECTED"], {"status": "not connected"})
-	# post if needed
-      return response  
+        return (self.__class__.error_value["NOT_CONNECTED"], {"status": "not connected"})
+        # post if needed
+      return response
     return wrapper
 
   def login(self, user, host, port, password):
@@ -60,7 +60,7 @@ class Core:
       self.controller = controller.Controller(self.host, self.control_port, self.user, password)
       self.__logged = True
       self.__class__.LOGGER.log.info("connected as %s, to %s, port %s " % (self.user, self.host, self.port))
-      return (self.__class__.error_value["CONNECTED"], {"status":"%s@%s:%s" % (self.user, self.host, self.port)}) 
+      return (self.__class__.error_value["CONNECTED"], {"status":"%s@%s:%s" % (self.user, self.host, self.port)})
     except:
       self.__class__.LOGGER.log.error("controller: %s, player: %s" % (str(self.controller), str(self.player)))
       return (self.__class__.error_value["AUTH_FAILED"],{"status":"auth failed"})
@@ -74,7 +74,7 @@ class Core:
     self.controller = None
     #self.player.stop()
     #self.controller.close()
-    #return 
+    #return
 
   @login_required
   def play(self):
@@ -92,7 +92,7 @@ class Core:
   def pause(self):
     self.player.stdin.write("pause\n")
 
-  # TODO : in these two following methods, try to flush the buffer in order to avoid 
+  # TODO : in these two following methods, try to flush the buffer in order to avoid
   # sound glitches and improving reactivity
 
   @login_required

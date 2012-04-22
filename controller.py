@@ -5,13 +5,13 @@ import json
 import time
 import log
 
-# TODO : 
+# TODO :
 # Improve the way try block are manipulated and the way exception are caught
 # Review the way the log is called
 
 class Controller:
   """
-  Controller based object manipulates json to send/receive 
+  Controller based object manipulates json to send/receive
   information to/from the streaming server
   """
   JSON_KEY_CURRENT_SONG   = "current_song"
@@ -56,21 +56,21 @@ class Controller:
     except urllib2.URLError, e:
       self.__class__.LOGGER.log.error("%s" % (e.args))
     return None
-  
+
   def refresh(self):
     self.__class__.LOGGER.log.debug("Entering refresh.")
     response = self.send_request("{\"timestamp\":1203333}")
     try:
       data = json.loads(response)
-      curr_title = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TITLE] 
-      curr_artist = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ARTIST] 
+      curr_title = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TITLE]
+      curr_artist = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ARTIST]
       curr_elapsed = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ELAPSED]
       curr_total = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TOTAL]
       return (curr_artist, curr_title, curr_elapsed, curr_total)
     except Exception, e:
       self.__class__.LOGGER.log.error("%s" % (str(e)))
       return ("", "", 0, 0)
- 
+
   def get_playlist_cache(self):
     return self.playlist
 
@@ -81,10 +81,10 @@ class Controller:
     try:
       data = json.loads(response)
       for song in data[self.__class__.JSON_KEY_PLAYLIST][self.__class__.JSON_KEY_PLAYLIST_SONGS]:
-        title = song[self.__class__.JSON_KEY_TITLE] 
-        artist = song[self.__class__.JSON_KEY_ARTIST] 
+        title = song[self.__class__.JSON_KEY_TITLE]
+        artist = song[self.__class__.JSON_KEY_ARTIST]
         total = song[self.__class__.JSON_KEY_TOTAL]
-	playlist.append((artist, title, total))
+        playlist.append((artist, title, total))
       return playlist
     except Exception, e:
       self.__class__.LOGGER.log.error("%s" % (str(e)))
@@ -95,34 +95,34 @@ class Controller:
     playlist = []
     try:
       data = json.loads(response)
-      curr_title = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TITLE] 
-      curr_artist = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ARTIST] 
+      curr_title = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TITLE]
+      curr_artist = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ARTIST]
       curr_elapsed = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ELAPSED]
       curr_total = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TOTAL]
       for song in data[self.__class__.JSON_KEY_PLAYLIST][self.__class__.JSON_KEY_PLAYLIST_SONGS]:
-        title = song[self.__class__.JSON_KEY_TITLE] 
-        artist = song[self.__class__.JSON_KEY_ARTIST] 
+        title = song[self.__class__.JSON_KEY_TITLE]
+        artist = song[self.__class__.JSON_KEY_ARTIST]
         total = song[self.__class__.JSON_KEY_TOTAL]
-	playlist.append((artist, title, total))
+        playlist.append((artist, title, total))
       return {"current":(curr_artist, curr_title, curr_elapsed, curr_total), "playlist":playlist}
     except Exception, e:
       self.__class__.LOGGER.log.error("%s" % (str(e)))
       return None
-    
+
   def prev(self):
     response = self.send_request("{\"timestamp\":12134567, \"action\":{\"name\":\"previous\"}}")
     playlist = []
     try:
       data = json.loads(response)
-      curr_title = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TITLE] 
-      curr_artist = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ARTIST] 
+      curr_title = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TITLE]
+      curr_artist = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ARTIST]
       curr_elapsed = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_ELAPSED]
       curr_total = data[self.__class__.JSON_KEY_CURRENT_SONG][self.__class__.JSON_KEY_TOTAL]
       for song in data[self.__class__.JSON_KEY_PLAYLIST][self.__class__.JSON_KEY_PLAYLIST_SONGS]:
-        title = song[self.__class__.JSON_KEY_TITLE] 
-        artist = song[self.__class__.JSON_KEY_ARTIST] 
+        title = song[self.__class__.JSON_KEY_TITLE]
+        artist = song[self.__class__.JSON_KEY_ARTIST]
         total = song[self.__class__.JSON_KEY_TOTAL]
-	playlist.append((artist, title, total))
+        playlist.append((artist, title, total))
       return {"current":(curr_artist, curr_title, curr_elapsed, curr_total), "playlist":playlist}
     except Exception, e:
       self.__class__.LOGGER.log.error("%s" % (str(e)))
