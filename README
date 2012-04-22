@@ -33,6 +33,31 @@ wur is a client side controller for the jukebox server (NestorInc)
 
 - Insert mode -
 
+ current available command are :
+  - login
+  - logout
+  
+ to implement :
+  - play
+  - stop
+  - pause
+  - next
+  - prev
+  - mute
+  - wait
+  - add
+  - load
+  - run
+  - playlist
+  - run
+  - timetable
+  - alias
+  - add
+  - delete
+
+  - "+" 1,3,5-*
+  - "-" 1,4,6-10,11-*
+
 
 
 

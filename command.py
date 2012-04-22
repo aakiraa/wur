@@ -2,7 +2,7 @@
 
 import log
 
-class Command: 
+class Command:
   """
   Command handle every input request and helps dispatching command through
   the core engine, it also allows to check user input
@@ -29,7 +29,7 @@ class Command:
                         '-':         self.__process_delete_from,
                   }
     self.alias_set = {}
-    self.core = core 
+    self.core = core
     self.ask_pass_callback = None
     self.pass_cleaning_callback = None
 
@@ -47,7 +47,7 @@ class Command:
           messages = None
           code = 200
       elif self.alias_set.has_key(splitted_command[0]):
-        self.process_command("%s %s" % (self.alias_set[splitted_command[0]])) 
+        self.process_command("%s %s" % (self.alias_set[splitted_command[0]]))
       else:
         messages = None
         code = 201
@@ -90,13 +90,13 @@ class Command:
 
   def __process_next(self):
     self.core.forward()
-  
+
   def __process_mute(self):
     self.core.mute()
 
   def __process_prev(self):
     self.core.previous()
-       
+
   def __process_wait(self, param):
     sleep_time = int(param)
     try:
@@ -106,7 +106,7 @@ class Command:
 
   def __process_add(self):
     pass
-       
+
   def __process_load(self):
     pass
 
